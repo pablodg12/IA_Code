@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include "data_structure.h"
 #include "simulating_annealing.h"
+#include <math.h>
 
 int main(int argc, const char * argv[]) {
     int temperatura_1 = 500005;

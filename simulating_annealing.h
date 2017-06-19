@@ -9,6 +9,7 @@
 #ifndef simulating_annealing_h
 #define simulating_annealing_h
 #include <stdio.h>
+#include <math.h>
 
 /* Funcion evaluadora */
 int evaluation_function(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods);
