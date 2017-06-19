@@ -33,9 +33,11 @@ int main(int argc, const char * argv[]) {
     /*Evaluation function*/
     srand(atoi(argv[1]));
     
-    for(int repeticion =0;repeticion<100;repeticion++){
-        for(int periodo = 1;periodo<n_periods+1;periodo++){
-            for(int z = 0; z <1000;z++){
+    int ww,we,rr,repeticion,periodo,z;
+    
+    for(repeticion =0;repeticion<100;repeticion++){
+        for(periodo = 1;periodo<n_periods+1;periodo++){
+            for(z = 0; z <1000;z++){
                 temperatura = move_host_list(host_list, visit, capacity, crew, meet, periodo, n_periods, z, temperatura_1);
             }
         }
@@ -65,7 +67,10 @@ int main(int argc, const char * argv[]) {
     
     printf("host_list\n");
     
-    for(int ww = 0; ww<host_list.length; ww++){
+    
+    
+    
+    for(ww = 0; ww<host_list.length; ww++){
         printf("%d\n",get_value(&host_list, ww));
     }
     
@@ -73,10 +78,10 @@ int main(int argc, const char * argv[]) {
     new = visit.first;
     
     printf("meet\n");
-    for(int we = 0; we<n_periods;we++){
+    for(we = 0; we<n_periods;we++){
         printf("periodo\n");
-        for(int rr =0;rr<host_list.length;rr++){
-            for(int ww = 0; ww<host_list.length; ww++){
+        for(rr =0;rr<host_list.length;rr++){
+            for(ww = 0; ww<host_list.length; ww++){
                 printf("%d ",get_value(new, ww));
             }
             printf("\n");

@@ -14,7 +14,8 @@
 
 int max_boat_capacity(struct list host_list,struct list capacity,struct list crew){
     int cap = 0;
-    for(int t = 0; t <host_list.length; t++){
+    int t;
+    for(t = 0; t <host_list.length; t++){
         cap = cap + get_value(&host_list, t)*(get_value(&capacity, t));
     }
     return(cap);
