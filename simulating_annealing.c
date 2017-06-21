@@ -125,12 +125,12 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
         for(k = 0; k<host_list.length;k++){
             if(get_value(&meet_list, k)>1){
                 exit_signal = exit_signal + 100;
-                release_list(&meet_list);
+                //release_list(&meet_list);
                 break;
             }
             if(get_value(&temporal, k)>get_value(&host_list, k)){
                 exit_signal = exit_signal + 500;
-                release_list(&temporal);
+                //release_list(&temporal);
                 break;
             };
         }
