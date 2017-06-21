@@ -99,11 +99,11 @@ int main(int argc, const char * argv[]) {
     
     
     
-    //release_list(&capacity);
-    //release_list(&crew);
-    //release_list(&host_list);
-    //release_matrix(&meet);
-    //release_matrix(&visit);
+    release_list(&capacity);
+    release_list(&crew);
+    release_list(&host_list);
+    release_matrix(&meet);
+    release_matrix(&visit);
     
 
     return 0;
