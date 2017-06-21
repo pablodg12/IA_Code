@@ -14,8 +14,7 @@
 
 int max_boat_capacity(struct list host_list,struct list capacity,struct list crew){
     int cap = 0;
-    int t;
-    for(t = 0; t <host_list.length; t++){
+    for(int t = 0; t <host_list.length; t++){
         cap = cap + get_value(&host_list, t)*(get_value(&capacity, t));
     }
     return(cap);
@@ -23,8 +22,7 @@ int max_boat_capacity(struct list host_list,struct list capacity,struct list cre
 
 int max_crew_capacity(struct list crew){
     int cap = 0;
-    int t;
-    for(t = 0; t <crew.length; t++){
+    for(int t = 0; t <crew.length; t++){
         cap = cap + get_value(&crew, t);
     }
     return cap;
@@ -43,17 +41,15 @@ int only_party_on_host(struct list host_list, struct matrix visit, struct list c
     struct list * new_m;
     new_m = meet.first;
     
-    int c,zz,xx,r,t,u;
-    
-    for(c = 0; c<host_list.length*(period-1);c++){
+    for(int c = 0; c<host_list.length*(period-1);c++){
         new = new->next;
         new2 = new2->next;
         new_m = new_m->next;
     }
     
-    for(zz = 0; zz<host_list.length;zz++){
+    for(int zz = 0; zz<host_list.length;zz++){
         int auxiliar = 0;
-        for(xx = 0;xx<host_list.length;xx++){
+        for(int xx = 0;xx<host_list.length;xx++){
             auxiliar = auxiliar + get_value(new2, zz);
             new2 = new2->next;
         }
@@ -62,33 +58,33 @@ int only_party_on_host(struct list host_list, struct matrix visit, struct list c
         }
         new2=visit.first;
         auxiliar = 0;
-        for(c = 0; c<host_list.length*(period-1);c++){
+        for(int c = 0; c<host_list.length*(period-1);c++){
             new2 = new2->next;
         }
     }
     
     
-    for(r = 0; r<host_list.length;r++){
+    for(int r = 0; r<host_list.length;r++){
         int size = 0;
-        for(t = 0; t<host_list.length; t++){
+        for(int t = 0; t<host_list.length; t++){
             if(r != t){
-                for(u = 0; u<host_list.length;u++){
+                for(int u = 0; u<host_list.length;u++){
                     if(r != u){
+                        if(get_value(new, t)> get_value(&host_list, r)){
+                            exit_signal = exit_signal + 100;
+                        }
                         if(t<u){
                             if(get_value(new_m, u) < get_value(new, t) + get_value(new, u) -1){
-                                exit_signal = exit_signal + 100;
+                                exit_signal = exit_signal + 10;
                             }
                         }
                     }
                 }
                 size = size + get_value(new, t)*get_value(&crew, t);
-                if(get_value(new, t)> get_value(&host_list, r)){
-                    exit_signal = exit_signal + 100;
-                }
             }
         }
         if(get_value(&host_list, r)*get_value(&capacity, r) <size){
-            exit_signal = exit_signal + 100;
+            exit_signal = exit_signal + 10;
         }
         new = new->next;
     }
@@ -101,9 +97,7 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
     struct list *new;
     struct list *new_m;
     
-    int c,t,k;
-    
-    for (c = 0; c<host_list.length; c++) {
+    for (int c = 0; c<host_list.length; c++) {
         
         struct list temporal;
         generate_empty_list((int)host_list.length, &temporal);
@@ -113,7 +107,7 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
         generate_empty_list((int)host_list.length, &meet_list);
         new_m = meet.first;
         
-        for(t = 0;t < periods*host_list.length;t++){
+        for(int t = 0;t < periods*host_list.length;t++){
             if(c != (t % host_list.length)){
                 change_value(&temporal, t % host_list.length, get_value(&temporal, t % host_list.length)+get_value(new, c));
             }
@@ -121,16 +115,18 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
                 change_value(&meet_list,t % host_list.length, get_value(&temporal, t % host_list.length)+get_value(new_m, c));
             }
             new = new->next;
+            //ojo
+            new_m = new_m->next;
         }
         
-        for(k = 0; k<host_list.length;k++){
+        for(int k = 0; k<host_list.length;k++){
             if(get_value(&meet_list, k)>1){
                 exit_signal = exit_signal + 100;
                 release_list(&meet_list);
                 break;
             }
             if(get_value(&temporal, k)>get_value(&host_list, k)){
-                exit_signal = exit_signal + 100;
+                exit_signal = exit_signal + 500;
                 release_list(&temporal);
                 break;
             };
@@ -146,18 +142,18 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
 int evaluation_function(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods){
     int valor = 0;
     int total_crew = 0;
-    int t;
+    
 
     if(max_boat_capacity(host_list, capacity, crew) - max_crew_capacity(crew) <0){
-        total_crew = -1*((max_boat_capacity(host_list, capacity, crew) - max_crew_capacity(crew)))*10;
+        total_crew = -1*((max_boat_capacity(host_list, capacity, crew) - max_crew_capacity(crew)))*500;
     }
     else{
-        total_crew =(max_boat_capacity(host_list, capacity, crew) - max_crew_capacity(crew))*10;
+        total_crew =(max_boat_capacity(host_list, capacity, crew) - max_crew_capacity(crew));
     }
     
     
-    for(t = 0; t<host_list.length;t++){
-        valor = valor + get_value(&host_list, t) + only_party_on_host(host_list, visit, capacity, crew, meet, period)*10 + all_period_constraint(host_list, visit, capacity, crew, meet, periods) + total_crew;
+    for(int t = 0; t<host_list.length;t++){
+        valor = valor + get_value(&host_list, t) + only_party_on_host(host_list, visit, capacity, crew, meet, period) + all_period_constraint(host_list, visit, capacity, crew, meet, periods) + total_crew;
     }
     
     return(valor);
@@ -173,26 +169,24 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
     new = visit.first;
     new2 = meet.first;
     
-    int c,r;
-    
-    for(c = 0; c<host_list.length*(period-1);c++){
+    for(int c = 0; c<host_list.length*(period-1);c++){
         new = new->next;
         new2 = new2->next;
     }
     
-    int temporal = round(((double)rand()/RAND_MAX)*14);
+    int temporal = round(((double)rand()/RAND_MAX)*13);
     
     int actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
     if( get_value( &host_list,temporal) == 0){
         change_value(&host_list, temporal, 1);
         if(evaluation_function(host_list, visit, capacity, crew, meet, period, periods) < actual){
-            temperatura = temperatura*(pow(0.95, iteration));
-            //temperatura = temperatura - 1;
+            temperatura = temperatura*(pow(0.99, iteration));
+            actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
         }
         else if (evaluation_function(host_list, visit, capacity, crew, meet, period, periods)>actual){
             if(-1*exp((evaluation_function(host_list, visit, capacity, crew, meet, period, periods)-actual)/temperatura)>((double)rand())/RAND_MAX){
-                temperatura = temperatura*(pow(0.95, iteration));
-                //temperatura = temperatura - 1;
+                temperatura = temperatura*(pow(0.99, iteration));
+                actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
             }
             else{
                 change_value(&host_list, temporal, 0);
@@ -204,13 +198,13 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
     else if( get_value( &host_list,temporal) == 1){
         change_value(&host_list, temporal, 0);
         if(evaluation_function(host_list, visit, capacity, crew, meet, period, periods) < actual){
-            temperatura = temperatura*(pow(0.95, iteration));
-            //temperatura = temperatura - 1;
+            temperatura = temperatura*(pow(0.99, iteration));
+            actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
         }
         else if (evaluation_function(host_list, visit, capacity, crew, meet, period, periods)>actual){
             if(-1*exp((evaluation_function(host_list, visit, capacity, crew, meet, period, periods)-actual)/temperatura)>((double)rand())/RAND_MAX){
-                temperatura = temperatura*(pow(0.95, iteration));
-//              temperatura = temperatura - 1;
+                temperatura = temperatura*(pow(0.99, iteration));
+                actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
             }
             else{
                 change_value(&host_list, temporal, 1);
@@ -219,26 +213,28 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
         }
     }
     
-    for(r = 0; r<host_list.length-1;r++){
+    for(int r = 0; r<host_list.length;r++){
         if (temperatura == 0){
             temperatura = 1;
         }
         
-        int temporal2 = round(((double)rand()/RAND_MAX)*14);
+        int temporal2 = round(((double)rand()/RAND_MAX)*13);
     
         if( get_value(new,temporal2) == 0){
             change_value(new, temporal2, 1*get_value(&host_list, r));
             if(evaluation_function(host_list, visit, capacity, crew, meet, period, periods) < actual){
-                temperatura = temperatura*(pow(0.95, iteration));
-//                temperatura = temperatura - 1;
+                temperatura = temperatura*(pow(0.99, iteration));
+                change_value(new2, temporal2, 1*get_value(&host_list, r));
+                actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
             }
             else if (evaluation_function(host_list, visit, capacity, crew, meet, period, periods)>actual){
                 if(-1*exp((evaluation_function(host_list, visit, capacity, crew, meet, period, periods)-actual)/temperatura)>((double)rand())/RAND_MAX){
-                    temperatura = temperatura*(pow(0.95, iteration));
-//                    temperatura = temperatura - 1;
+                    temperatura = temperatura*(pow(0.99, iteration));
+                    change_value(new2, temporal2, 1*get_value(&host_list, r));
                 }
                 else{
                     change_value(new, temporal2, 0*get_value(&host_list, r));
+                    change_value(new2, temporal2, 0*get_value(&host_list, r));
                 
                 }
             }
@@ -247,51 +243,17 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
         else if( get_value(new,temporal2) == 1){
             change_value(new, temporal2, 0*get_value(&host_list, r));
             if(evaluation_function(host_list, visit, capacity, crew, meet, period, periods) < actual){
-                temperatura = temperatura*(pow(0.95, iteration));
-//                temperatura = temperatura - 1;
+                temperatura = temperatura*(pow(0.99, iteration));
+                change_value(new2, temporal2, 0*get_value(&host_list, r));
+                actual = evaluation_function(host_list, visit, capacity, crew, meet, period, periods);
             }
             else if (evaluation_function(host_list, visit, capacity, crew, meet, period, periods)>actual){
                 if(-1*exp((evaluation_function(host_list, visit, capacity, crew, meet, period, periods)-actual)/temperatura)>((double)rand())/RAND_MAX){
-                    temperatura = temperatura*(pow(0.95, iteration));
-                    //temperatura = temperatura - 1;
+                    temperatura = temperatura*(pow(0.99, iteration));
+                    change_value(new2, temporal2, 0*get_value(&host_list, r));
                 }
                 else{
                     change_value(new, temporal2, 1*get_value(&host_list, r));
-                    
-                }
-            }
-        }
-        
-        if( get_value(new2,temporal2) == 0){
-            change_value(new2, temporal2, 1*get_value(&host_list, r));
-            if(evaluation_function(host_list, visit, capacity, crew, meet, period, periods) < actual){
-                temperatura = temperatura*(pow(0.95, iteration));
-                //                temperatura = temperatura - 1;
-            }
-            else if (evaluation_function(host_list, visit, capacity, crew, meet, period, periods)>actual){
-                if(-1*exp((evaluation_function(host_list, visit, capacity, crew, meet, period, periods)-actual)/temperatura)>((double)rand())/RAND_MAX){
-                    temperatura = temperatura*(pow(0.95, iteration));
-                    //                    temperatura = temperatura - 1;
-                }
-                else{
-                    change_value(new2, temporal2, 0*get_value(&host_list, r));
-                    
-                }
-            }
-        }
-        
-        else if( get_value(new2,temporal2) == 1){
-            change_value(new2, temporal2, 0*get_value(&host_list, r));
-            if(evaluation_function(host_list, visit, capacity, crew, meet, period, periods) < actual){
-                temperatura = temperatura*(pow(0.95, iteration));
-                //                temperatura = temperatura - 1;
-            }
-            else if (evaluation_function(host_list, visit, capacity, crew, meet, period, periods)>actual){
-                if(-1*exp((evaluation_function(host_list, visit, capacity, crew, meet, period, periods)-actual)/temperatura)>((double)rand())/RAND_MAX){
-                    temperatura = temperatura*(pow(0.95, iteration));
-                    //temperatura = temperatura - 1;
-                }
-                else{
                     change_value(new2, temporal2, 1*get_value(&host_list, r));
                     
                 }
@@ -301,6 +263,6 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
         new=new->next;
         new2=new2->next;
                 }
-    
     return temperatura;
 };
+

@@ -13,9 +13,8 @@
 //Generate a random list of size_list
 struct list generate_random_list(int size_list,struct list* params, int seed){
     srand(seed);
-    int i;
     generate_empty_list(size_list, params);
-    for(i = 0; i < params->length; i++){
+    for(int i = 0; i < params->length; i++){
         change_value(params, i, rand() % 2);
     }
     return*(params);
@@ -24,8 +23,7 @@ struct list generate_random_list(int size_list,struct list* params, int seed){
 //Generate a matrix
 void generate_new_matrix(struct matrix* mat, int nrow, int ncol){
     mat->length=0;
-    int k;
-    for(k =0; k<nrow; k++){
+    for(int k =0; k<nrow; k++){
         struct list *new;
         new = malloc(sizeof(struct list));
         
@@ -47,8 +45,7 @@ void generate_new_matrix(struct matrix* mat, int nrow, int ncol){
 //This function generate a empty list with size size_list
 struct list generate_empty_list(int size_list,struct list* params){
     params->length=0;
-    int r;
-    for(r = 0; r < size_list; r++){
+    for(int r = 0; r < size_list; r++){
         struct variable *aux;
         aux = malloc(sizeof(struct variable));
         aux->index = r;
@@ -73,8 +70,7 @@ struct list generate_empty_list(int size_list,struct list* params){
 //This function release memory from the list
 void release_list(struct list* params){
     struct variable *aux;
-    int k;
-    for (k = 0; k < params->length; k++) {
+    for (int k = 0; k < params->length; k++) {
         aux = params->first;
         if(params->first->next != NULL){
             params->first = params->first->next;
@@ -88,8 +84,7 @@ void release_list(struct list* params){
 
 void release_matrix(struct matrix* mat){
     struct list *aux;
-    int z;
-    for(z = 0; z<mat->length;z++){
+    for(int z = 0; z<mat->length;z++){
         aux = mat->first;
         release_list(aux);
         if(mat->first->next != NULL){
@@ -107,8 +102,7 @@ void release_matrix(struct matrix* mat){
 void change_value(struct list* params,int index,int value){
     struct variable *aux;
     aux = params->first;
-    int k;
-    for (k = 0; k < params->length; k++) {
+    for (int k = 0; k < params->length; k++) {
         if(aux->index == index){
             aux->value = value;
             break;
@@ -122,11 +116,10 @@ void change_value(struct list* params,int index,int value){
 
 //This function get a value from a list, the value with index index
 int get_value(struct list* params,int index){
-    int k;
     int value = 0;
     struct variable *aux;
     aux = params->first;
-    for (k = 0; k < params->length; k++) {
+    for (int k = 0; k < params->length; k++) {
         if(aux->index == index){
             value = aux->value;
             break;
