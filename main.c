@@ -39,7 +39,7 @@ int main(int argc, const char * argv[]) {
         int temperatura_1 = 5005;
         for(periodo = 1;periodo<n_periods+1;periodo++){
             for(z = 0; z <100;z++){
-                if(only_party_on_host(host_list, visit, capacity, crew, meet, 5) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 4) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 3) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 2) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 1) == 0 && all_period_constraint(host_list, visit, capacity, crew, meet, n_periods) == 0){
+                if(only_party_on_host(host_list, visit, capacity, crew, meet, 4) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 3) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 2) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 1) == 0 && all_period_constraint(host_list, visit, capacity, crew, meet, n_periods) == 0){
                     printf("stop\n");
                     signal = 1;
                     break;
