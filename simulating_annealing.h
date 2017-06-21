@@ -20,7 +20,7 @@ int only_party_on_host(struct list host_list, struct matrix visit, struct list c
 /* This constraint is for all period*/
 int all_period_constraint(struct list host_list, struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int periods);
 /* Movement */
-int move_host_list(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods,int iteration,int temperatura);
+void move_host_list(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods,int iteration,int temperatura);
 
 int max_crew_capacity(struct list crew);
 

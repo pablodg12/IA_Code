@@ -159,7 +159,7 @@ int evaluation_function(struct list host_list,struct matrix visit, struct list c
     return(valor);
 };
 
-int move_host_list(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods,int iteration, int temperatura){
+void move_host_list(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods,int iteration, int temperatura){
     if (temperatura == 0){
         temperatura = 1;
     }
@@ -263,6 +263,5 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
         new=new->next;
         new2=new2->next;
                 }
-    return temperatura;
 };
 
