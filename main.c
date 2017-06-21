@@ -24,14 +24,14 @@ int main(int argc, const char * argv[]) {
     int n_periods;
     
     /*Initialization*/
-    generate_list_from_file("data_files/param1.txt",&capacity,&crew,&n_periods);
+    generate_list_from_file("data_files/param10.txt",&capacity,&crew,&n_periods);
     generate_empty_list((int)capacity.length, &host_list);
     generate_new_matrix(&meet, n_periods*(int)crew.length, (int)crew.length);
     generate_new_matrix(&visit, n_periods*(int)crew.length,(int)crew.length);
 
 
     /*Evaluation function*/
-    
+    srand(atoi(argv[1]));
     
     if(n_periods == 4){
         for(int repeticion =0;repeticion<10;repeticion++){
