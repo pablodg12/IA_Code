@@ -33,11 +33,12 @@ int main(int argc, const char * argv[]) {
 
     /*Evaluation function*/
     srand(atoi(argv[1]));
-    
-    for(int repeticion =0;repeticion<10;repeticion++){
+    int repeticion,periodo,z,ww,we,rr;
+
+    for(repeticion =0;repeticion<10;repeticion++){
         int temperatura_1 = 5005;
-        for(int periodo = 1;periodo<n_periods+1;periodo++){
-            for(int z = 0; z <100;z++){
+        for(periodo = 1;periodo<n_periods+1;periodo++){
+            for(z = 0; z <100;z++){
                 if(only_party_on_host(host_list, visit, capacity, crew, meet, 5) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 4) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 3) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 2) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 1) == 0 && all_period_constraint(host_list, visit, capacity, crew, meet, n_periods) == 0){
                     printf("stop\n");
                     signal = 1;
@@ -76,7 +77,7 @@ int main(int argc, const char * argv[]) {
     
     printf("host_list\n");
     
-    for(int ww = 0; ww<host_list.length; ww++){
+    for(ww = 0; ww<host_list.length; ww++){
         printf("%d\n",get_value(&host_list, ww));
     }
     
@@ -84,10 +85,10 @@ int main(int argc, const char * argv[]) {
     new = visit.first;
     
     printf("meet\n");
-    for(int we = 0; we<n_periods;we++){
+    for(we = 0; we<n_periods;we++){
         printf("periodo\n");
-        for(int rr =0;rr<host_list.length;rr++){
-            for(int ww = 0; ww<host_list.length; ww++){
+        for(rr =0;rr<host_list.length;rr++){
+            for(ww = 0; ww<host_list.length; ww++){
                 printf("%d ",get_value(new, ww));
             }
             printf("\n");
