@@ -32,7 +32,7 @@ int main(int argc, const char * argv[]) {
 
 
     /*Evaluation function*/
-    srand(atoi(argv[1]));
+    srand(1);
     int repeticion,periodo,z,ww,we,rr;
 
     for(repeticion =0;repeticion<10;repeticion++){
