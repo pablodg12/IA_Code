@@ -14,8 +14,7 @@
 
 int max_boat_capacity(struct list host_list,struct list capacity,struct list crew){
     int cap = 0;
-    int t;
-    for(t = 0; t <host_list.length; t++){
+    for(int t = 0; t <host_list.length; t++){
         cap = cap + get_value(&host_list, t)*(get_value(&capacity, t));
     }
     return(cap);
@@ -23,8 +22,7 @@ int max_boat_capacity(struct list host_list,struct list capacity,struct list cre
 
 int max_crew_capacity(struct list crew){
     int cap = 0;
-    int t;
-    for(t = 0; t <crew.length; t++){
+    for(int t = 0; t <crew.length; t++){
         cap = cap + get_value(&crew, t);
     }
     return cap;
@@ -43,16 +41,15 @@ int only_party_on_host(struct list host_list, struct matrix visit, struct list c
     struct list * new_m;
     new_m = meet.first;
     
-    int c,zz,xx,r,t,u;
-    for(c = 0; c<host_list.length*(period-1);c++){
+    for(int c = 0; c<host_list.length*(period-1);c++){
         new = new->next;
         new2 = new2->next;
         new_m = new_m->next;
     }
     
-    for(zz = 0; zz<host_list.length;zz++){
+    for(int zz = 0; zz<host_list.length;zz++){
         int auxiliar = 0;
-        for(xx = 0;xx<host_list.length;xx++){
+        for(int xx = 0;xx<host_list.length;xx++){
             auxiliar = auxiliar + get_value(new2, zz);
             new2 = new2->next;
         }
@@ -61,17 +58,17 @@ int only_party_on_host(struct list host_list, struct matrix visit, struct list c
         }
         new2=visit.first;
         auxiliar = 0;
-        for(c = 0; c<host_list.length*(period-1);c++){
+        for(int c = 0; c<host_list.length*(period-1);c++){
             new2 = new2->next;
         }
     }
     
     
-    for(r = 0; r<host_list.length;r++){
+    for(int r = 0; r<host_list.length;r++){
         int size = 0;
-        for(t = 0; t<host_list.length; t++){
+        for(int t = 0; t<host_list.length; t++){
             if(r != t){
-                for(u = 0; u<host_list.length;u++){
+                for(int u = 0; u<host_list.length;u++){
                     if(r != u){
                         if(get_value(new, t)> get_value(&host_list, r)){
                             exit_signal = exit_signal + 100;
@@ -99,8 +96,8 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
     int exit_signal = 0;
     struct list *new;
     struct list *new_m;
-    int c,t,k;
-    for (c = 0; c<host_list.length; c++) {
+    
+    for (int c = 0; c<host_list.length; c++) {
         
         struct list temporal;
         generate_empty_list((int)host_list.length, &temporal);
@@ -110,7 +107,7 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
         generate_empty_list((int)host_list.length, &meet_list);
         new_m = meet.first;
         
-        for(t = 0;t < periods*host_list.length;t++){
+        for(int t = 0;t < periods*host_list.length;t++){
             if(c != (t % host_list.length)){
                 change_value(&temporal, t % host_list.length, get_value(&temporal, t % host_list.length)+get_value(new, c));
             }
@@ -122,15 +119,15 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
             new_m = new_m->next;
         }
         
-        for(k = 0; k<host_list.length;k++){
+        for(int k = 0; k<host_list.length;k++){
             if(get_value(&meet_list, k)>1){
                 exit_signal = exit_signal + 100;
-                //release_list(&meet_list);
+                release_list(&meet_list);
                 break;
             }
             if(get_value(&temporal, k)>get_value(&host_list, k)){
                 exit_signal = exit_signal + 500;
-                //release_list(&temporal);
+                release_list(&temporal);
                 break;
             };
         }
@@ -145,7 +142,6 @@ int all_period_constraint(struct list host_list, struct matrix visit, struct lis
 int evaluation_function(struct list host_list,struct matrix visit, struct list capacity, struct list crew, struct matrix meet, int period, int periods){
     int valor = 0;
     int total_crew = 0;
-    int t;
     
 
     if(max_boat_capacity(host_list, capacity, crew) - max_crew_capacity(crew) <0){
@@ -156,7 +152,7 @@ int evaluation_function(struct list host_list,struct matrix visit, struct list c
     }
     
     
-    for(t = 0; t<host_list.length;t++){
+    for(int t = 0; t<host_list.length;t++){
         valor = valor + get_value(&host_list, t) + only_party_on_host(host_list, visit, capacity, crew, meet, period) + all_period_constraint(host_list, visit, capacity, crew, meet, periods) + total_crew;
     }
     
@@ -167,14 +163,13 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
     if (temperatura == 0){
         temperatura = 1;
     }
-    int c,r;
     
     struct list *new;
     struct list *new2;
     new = visit.first;
     new2 = meet.first;
     
-    for(c = 0; c<host_list.length*(period-1);c++){
+    for(int c = 0; c<host_list.length*(period-1);c++){
         new = new->next;
         new2 = new2->next;
     }
@@ -218,7 +213,7 @@ int move_host_list(struct list host_list,struct matrix visit, struct list capaci
         }
     }
     
-    for(r = 0; r<host_list.length;r++){
+    for(int r = 0; r<host_list.length;r++){
         if (temperatura == 0){
             temperatura = 1;
         }
