@@ -9,10 +9,12 @@
 #include <stdio.h>
 #include "data_structure.h"
 #include "simulating_annealing.h"
+#include <time.h>
 
 int main(int argc, const char * argv[]) {
     int temperatura_1 = 5005;
     int signal = 0;
+    int iterations = 0;
     
     /*Variable*/
     struct matrix meet;
@@ -24,7 +26,7 @@ int main(int argc, const char * argv[]) {
     int n_periods;
     
     /*Initialization*/
-    generate_list_from_file("data_files/param10.txt",&capacity,&crew,&n_periods);
+    generate_list_from_file("data_files/param9.txt",&capacity,&crew,&n_periods);
     generate_empty_list((int)capacity.length, &host_list);
     generate_new_matrix(&meet, n_periods*(int)crew.length, (int)crew.length);
     generate_new_matrix(&visit, n_periods*(int)crew.length,(int)crew.length);
@@ -33,8 +35,9 @@ int main(int argc, const char * argv[]) {
     /*Evaluation function*/
     srand(atoi(argv[1]));
     
+    clock_t begin = clock();
     if(n_periods == 4){
-        for(int repeticion =0;repeticion<10;repeticion++){
+        for(int repeticion =0;repeticion<20;repeticion++){
             for(int periodo = 1;periodo<n_periods+1;periodo++){
                 for(int z = 0; z <100;z++){
                     if(only_party_on_host(host_list, visit, capacity, crew, meet, 4) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 3) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 2) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 1) == 0 && all_period_constraint(host_list, visit, capacity, crew, meet, n_periods) == 0){
@@ -43,6 +46,7 @@ int main(int argc, const char * argv[]) {
                         break;
                     }
                     move_host_list(host_list, visit, capacity, crew, meet, periodo, n_periods, z, temperatura_1);
+                    iterations = iterations + 1;
                 }
                 if (signal==1){
                     break;
@@ -93,7 +97,7 @@ int main(int argc, const char * argv[]) {
     }
     
     if(n_periods == 5){
-        for(int repeticion =0;repeticion<10;repeticion++){
+        for(int repeticion =0;repeticion<5;repeticion++){
             for(int periodo = 1;periodo<n_periods+1;periodo++){
                 for(int z = 0; z <100;z++){
                     if(only_party_on_host(host_list, visit, capacity, crew, meet, 5) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 4) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 3) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 2) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 1) == 0 && all_period_constraint(host_list, visit, capacity, crew, meet, n_periods) == 0){
@@ -102,6 +106,7 @@ int main(int argc, const char * argv[]) {
                         break;
                     }
                     move_host_list(host_list, visit, capacity, crew, meet, periodo, n_periods, z, temperatura_1);
+                    iterations = iterations + 1;
                 }
                 if (signal==1){
                     break;
@@ -116,7 +121,7 @@ int main(int argc, const char * argv[]) {
         printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 1, n_periods));
         printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 2, n_periods));
         printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 3, n_periods));
-        printf("%d",evaluation_function(host_list, visit, capacity, crew, meet, 4, n_periods));
+        printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 4, n_periods));
         printf("%d\n",evaluation_function(host_list, visit, capacity, crew, meet, 5, n_periods));
         printf("----Capacidad de los botes-----\n");
         printf("%d\n",max_boat_capacity(host_list, capacity,crew));
@@ -126,7 +131,7 @@ int main(int argc, const char * argv[]) {
         printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 1));
         printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 2));
         printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 3));
-        printf("%d",only_party_on_host(host_list, visit, capacity,crew, meet, 4));
+        printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 4));
         printf("%d\n",only_party_on_host(host_list, visit, capacity,crew, meet, 5));
         printf("----Penalizacion B-----\n");
         printf("%d\n",all_period_constraint(host_list, visit, capacity, crew, meet, n_periods));
@@ -154,7 +159,7 @@ int main(int argc, const char * argv[]) {
     }
     
     if(n_periods == 6){
-        for(int repeticion =0;repeticion<10;repeticion++){
+        for(int repeticion =0;repeticion<20;repeticion++){
             for(int periodo = 1;periodo<n_periods+1;periodo++){
                 for(int z = 0; z <100;z++){
                     if(only_party_on_host(host_list, visit, capacity, crew, meet, 6) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 5) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 4) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 3) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 2) == 0 && only_party_on_host(host_list, visit, capacity, crew, meet, 1) == 0 && all_period_constraint(host_list, visit, capacity, crew, meet, n_periods) == 0){
@@ -163,6 +168,7 @@ int main(int argc, const char * argv[]) {
                         break;
                     }
                     move_host_list(host_list, visit, capacity, crew, meet, periodo, n_periods, z, temperatura_1);
+                    iterations = iterations + 1;
                 }
                 if (signal==1){
                     break;
@@ -177,8 +183,8 @@ int main(int argc, const char * argv[]) {
         printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 1, n_periods));
         printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 2, n_periods));
         printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 3, n_periods));
-        printf("%d",evaluation_function(host_list, visit, capacity, crew, meet, 4, n_periods));
-        printf("%d",evaluation_function(host_list, visit, capacity, crew, meet, 5, n_periods));
+        printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 4, n_periods));
+        printf("%d ",evaluation_function(host_list, visit, capacity, crew, meet, 5, n_periods));
         printf("%d\n",evaluation_function(host_list, visit, capacity, crew, meet, 6, n_periods));
         printf("----Capacidad de los botes-----\n");
         printf("%d\n",max_boat_capacity(host_list, capacity,crew));
@@ -188,9 +194,9 @@ int main(int argc, const char * argv[]) {
         printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 1));
         printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 2));
         printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 3));
-        printf("%d",only_party_on_host(host_list, visit, capacity,crew, meet, 4));
-        printf("%d",only_party_on_host(host_list, visit, capacity,crew, meet, 5));
-        printf("%d\n",only_party_on_host(host_list, visit, capacity,crew, meet, 5));
+        printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 4));
+        printf("%d ",only_party_on_host(host_list, visit, capacity,crew, meet, 5));
+        printf("%d\n",only_party_on_host(host_list, visit, capacity,crew, meet, 6));
         printf("----Penalizacion B-----\n");
         printf("%d\n",all_period_constraint(host_list, visit, capacity, crew, meet, n_periods));
         
@@ -222,6 +228,9 @@ int main(int argc, const char * argv[]) {
     release_matrix(&meet);
     release_matrix(&visit);
     
-
+    clock_t end = clock();
+    double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+    printf("%f seconds\n" ,time_spent);
+    printf("%d iterations\n",iterations);
     return 0;
 }
